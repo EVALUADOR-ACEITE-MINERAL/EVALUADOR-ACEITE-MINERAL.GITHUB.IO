@@ -1,0 +1,13 @@
+{
+  "name": "evaluador-aceite-ntc3284",
+  "version": "1.0.0",
+  "description": "Evaluación de aceite mineral aislante en servicio según NTC 3284, con semáforo",
+  "private": true,
+  "scripts": {
+    "start": "node scripts/servidor.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Evaluador de aceite NTC 3284</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="encabezado">
+    <h1>Evaluador de aceite mineral aislante en servicio</h1>
+    <p class="subtitulo">Criterios de la <strong>NTC 3284 (1991-11-20)</strong> — Guía para el mantenimiento y la supervisión de los aceites minerales aislantes en servicio en equipos eléctricos.</p>
+    <p class="aviso" role="note"><span aria-hidden="true">⚠</span> Herramienta de apoyo. No reemplaza el análisis de un especialista ni el procedimiento oficial de laboratorio. La norma misma (8.3) advierte que sus límites son indicativos.</p>
+  </header>
+
+  <main>
+    <form id="formulario" novalidate>
+      <div id="errores-generales" class="errores-generales" role="alert" hidden></div>
+
+      <fieldset>
+        <legend>Equipo</legend>
+        <div class="campo">
+          <label for="categoria">Categoría del equipo <span class="ref">(Sección 6)</span></label>
+          <select id="categoria" name="categoria" aria-describedby="categoria-ayuda categoria-error">
+            <option value="">— Seleccione —</option>
+            <option value="O">O — Transformador de potencia &gt; 420 kV</option>
+            <option value="A">A — Transformador de potencia 170-420 kV o de continuidad vital</option>
+            <option value="B">B — Transformador de potencia 72,5-170 kV</option>
+            <option value="C">C — Transformador de potencia hasta 72,5 kV; interruptores, selectores, reguladores</option>
+            <option value="D">D — Transformador de medida &gt; 170 kV</option>
+            <option value="E">E — Transformador de medida hasta 170 kV</option>
+            <option value="F">F — Conmutador de derivación bajo carga</option>
+            <option value="G">G — Disyuntor sumergido en aceite</option>
+          </select>
+          <p id="categoria-ayuda" class="ayuda">La Tabla 1 solo da límites para O, A, B y C. Nota 3 de la Sección 6: transformadores ≤ 1 MVA y 36 kV no están clasificados; si se exige un programa de control, se sugiere seguir la categoría C.</p>
+          <p id="categoria-error" class="error" hidden></p>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Ensayos del numeral 8.2.2 (necesarios para emitir una condición)</legend>
+
+        <div class="campo">
+          <label for="metodoRuptura">Método de ensayo de la tensión de ruptura</label>
+          <select id="metodoRuptura" name="metodoRuptura" aria-describedby="metodoRuptura-error">
+            <option value="">— Seleccione —</option>
+            <option value="D877">ASTM D877</option>
+            <option value="D1816_004">ASTM D1816 (0,04 pulg)</option>
+            <option value="D1816_008">ASTM D1816 (0,08 pulg)</option>
+            <option value="IEC156">IEC 156</option>
+          </select>
+          <p id="metodoRuptura-error" class="error" hidden></p>
+        </div>
+
+        <div class="campo numerico" data-id="ruptura">
+          <label for="ruptura">Tensión de ruptura dieléctrica</label>
+          <div class="con-unidad"><input id="ruptura" name="ruptura" inputmode="decimal" autocomplete="off" aria-describedby="ruptura-u ruptura-error"><span id="ruptura-u" class="unidad">kV</span></div>
+          <p id="ruptura-error" class="error" hidden></p>
+        </div>
+
+        <div class="campo numerico">
+          <label for="agua">Contenido de humedad <span class="ref">(ASTM D1533)</span></label>
+          <div class="con-unidad"><input id="agua" name="agua" inputmode="decimal" autocomplete="off" aria-describedby="agua-u agua-error"><span id="agua-u" class="unidad">ppm</span></div>
+          <p id="agua-error" class="error" hidden></p>
+        </div>
+
+        <div class="campo numerico">
+          <label for="nn">Índice de neutralización <span class="ref">(ASTM D974)</span></label>
+          <div class="con-unidad"><input id="nn" name="nn" inputmode="decimal" autocomplete="off" aria-describedby="nn-u nn-error"><span id="nn-u" class="unidad">mg KOH/g</span></div>
+          <p id="nn-error" class="error" hidden></p>
+        </div>
+
+        <div class="campo numerico">
+          <label for="fdd25">Factor de potencia a 25 °C <span class="ref">(ASTM D924)</span></label>
+          <div class="con-unidad"><input id="fdd25" name="fdd25" inputmode="decimal" autocomplete="off" aria-describedby="fdd25-u fdd25-error"><span id="fdd25-u" class="unidad">%</span></div>
+          <p id="fdd25-error" class="error" hidden></p>
+        </div>
+
+        <div class="campo">
+          <label for="aspecto">Aspecto visual <span class="ref">(ASTM D1524)</span></label>
+          <select id="aspecto" name="aspecto" aria-describedby="aspecto-error">
+            <option value="">— Sin dato —</option>
+            <option value="claro">Claro y libre de sedimentos</option>
+            <option value="no_claro">Turbio, sucio o con sedimentos</option>
+          </select>
+          <p id="aspecto-error" class="error" hidden></p>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Otros ensayos (opcionales)</legend>
+        <div class="campo numerico">
+          <label for="tensionInterfasial">Tensión interfasial <span class="ref">(ASTM D971)</span></label>
+          <div class="con-unidad"><input id="tensionInterfasial" name="tensionInterfasial" inputmode="decimal" autocomplete="off" aria-describedby="tensionInterfasial-u tensionInterfasial-error"><span id="tensionInterfasial-u" class="unidad unidad-alerta" title="La Tabla 1 no indica unidad">unidad no indicada en la norma</span></div>
+          <p id="tensionInterfasial-error" class="error" hidden></p>
+        </div>
+        <div class="campo numerico">
+          <label for="fdd100">Factor de potencia a 100 °C <span class="ref">(ASTM D924)</span></label>
+          <div class="con-unidad"><input id="fdd100" name="fdd100" inputmode="decimal" autocomplete="off" aria-describedby="fdd100-u fdd100-error"><span id="fdd100-u" class="unidad">%</span></div>
+          <p id="fdd100-error" class="error" hidden></p>
+        </div>
+        <div class="campo numerico">
+          <label for="resistividad90">Resistividad a 90 °C <span class="ref">(IEC 247)</span></label>
+          <div class="con-unidad"><input id="resistividad90" name="resistividad90" inputmode="decimal" autocomplete="off" aria-describedby="resistividad90-u resistividad90-error"><span id="resistividad90-u" class="unidad">GΩ·m</span></div>
+          <p id="resistividad90-error" class="error" hidden></p>
+        </div>
+        <div class="campo numerico">
+          <label for="resistividad20">Resistividad a 20 °C <span class="ref">(IEC 247)</span></label>
+          <div class="con-unidad"><input id="resistividad20" name="resistividad20" inputmode="decimal" autocomplete="off" aria-describedby="resistividad20-u resistividad20-error"><span id="resistividad20-u" class="unidad">GΩ·m</span></div>
+          <p id="resistividad20-error" class="error" hidden></p>
+        </div>
+        <div class="campo numerico">
+          <label for="color">Color <span class="ref">(ASTM D1500)</span></label>
+          <div class="con-unidad"><input id="color" name="color" inputmode="decimal" autocomplete="off" aria-describedby="color-u color-error"><span id="color-u" class="unidad">escala D1500</span></div>
+          <p id="color-error" class="error" hidden></p>
+        </div>
+        <div class="campo numerico">
+          <label for="temperaturaMuestra">Temperatura del aceite al muestrear <span class="ref">(numeral 5)</span></label>
+          <div class="con-unidad"><input id="temperaturaMuestra" name="temperaturaMuestra" inputmode="decimal" autocomplete="off" aria-describedby="temperaturaMuestra-u temperaturaMuestra-error"><span id="temperaturaMuestra-u" class="unidad">°C</span></div>
+          <p id="temperaturaMuestra-error" class="error" hidden></p>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Propiedades físicas (informativas, no afectan el semáforo)</legend>
+        <div class="campo numerico">
+          <label for="puntoInflamacion">Punto de inflamación <span class="ref">(ASTM D92)</span></label>
+          <div class="con-unidad"><input id="puntoInflamacion" name="puntoInflamacion" inputmode="decimal" autocomplete="off" aria-describedby="puntoInflamacion-u puntoInflamacion-error"><span id="puntoInflamacion-u" class="unidad">°C</span></div>
+          <p id="puntoInflamacion-error" class="error" hidden></p>
+        </div>
+        <div class="campo numerico">
+          <label for="puntoFluidez">Punto de fluidez <span class="ref">(ASTM D97)</span></label>
+          <div class="con-unidad"><input id="puntoFluidez" name="puntoFluidez" inputmode="decimal" autocomplete="off" aria-describedby="puntoFluidez-u puntoFluidez-error"><span id="puntoFluidez-u" class="unidad">°C</span></div>
+          <p id="puntoFluidez-error" class="error" hidden></p>
+        </div>
+        <div class="campo numerico">
+          <label for="gravedadEspecifica">Gravedad específica 15 °C/15 °C <span class="ref">(ASTM D1298)</span></label>
+          <div class="con-unidad"><input id="gravedadEspecifica" name="gravedadEspecifica" inputmode="decimal" autocomplete="off" aria-describedby="gravedadEspecifica-u gravedadEspecifica-error"><span id="gravedadEspecifica-u" class="unidad">adimensional</span></div>
+          <p id="gravedadEspecifica-error" class="error" hidden></p>
+        </div>
+        <div class="campo numerico">
+          <label for="viscosidad40">Viscosidad a 40 °C <span class="ref">(ASTM D445)</span></label>
+          <div class="con-unidad"><input id="viscosidad40" name="viscosidad40" inputmode="decimal" autocomplete="off" aria-describedby="viscosidad40-u viscosidad40-error"><span id="viscosidad40-u" class="unidad">mm²/s</span></div>
+          <p id="viscosidad40-error" class="error" hidden></p>
+        </div>
+      </fieldset>
+
+      <div class="acciones">
+        <button type="submit" class="primario">Evaluar muestra</button>
+        <button type="button" id="limpiar">Limpiar</button>
+        <button type="button" id="ejemplo">Cargar ejemplo</button>
+      </div>
+    </form>
+
+    <section id="resultado" class="resultado" aria-live="polite" aria-labelledby="titulo-resultado" hidden>
+      <h2 id="titulo-resultado">Resultado</h2>
+      <div class="general">
+        <div class="semaforo" role="img" id="semaforo" aria-label="">
+          <span class="luz luz-rojo"></span>
+          <span class="luz luz-ambar"></span>
+          <span class="luz luz-verde"></span>
+        </div>
+        <div class="general-texto">
+          <p class="general-etiqueta" id="general-etiqueta"></p>
+          <ul id="general-motivos"></ul>
+        </div>
+      </div>
+      <details class="notas" open>
+        <summary>Notas de interpretación según la norma</summary>
+        <ul id="general-notas"></ul>
+      </details>
+
+      <h3>Resultado por parámetro</h3>
+      <div class="tabla-scroll">
+        <table id="tabla-parametros">
+          <caption class="sr-only">Resultado individual por parámetro</caption>
+          <thead>
+            <tr><th scope="col">Parámetro</th><th scope="col">Valor</th><th scope="col">Criterio aplicable</th><th scope="col">Estado</th><th scope="col">Por qué</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <label class="mostrar-vacios"><input type="checkbox" id="mostrar-vacios"> Mostrar parámetros sin dato</label>
+    </section>
+
+    <section class="leyenda" aria-labelledby="titulo-leyenda">
+      <h2 id="titulo-leyenda">Cómo leer el semáforo</h2>
+      <ul>
+        <li><span class="chip tono-verde"><span aria-hidden="true">✔</span> Condición favorable</span> Todos los ensayos del 8.2.2 en Grupo I (aceite satisfactorio para continuar en servicio, 8.3).</li>
+        <li><span class="chip tono-ambar"><span aria-hidden="true">▲</span> Alerta</span> Algún parámetro en Grupo II (por reacondicionar) o fuera del límite de Grupo I sin grupo definido en la Tabla 1.</li>
+        <li><span class="chip tono-rojo"><span aria-hidden="true">✖</span> Condición crítica</span> Algún parámetro en Grupo III (por regenerar).</li>
+        <li><span class="chip tono-gris"><span aria-hidden="true">?</span> No determinado</span> Faltan datos, el criterio es ambiguo o la norma no cubre el caso. Nunca se presenta como normal.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <p>NTC 3284 (ICONTEC, 1991), documento de referencia IEC 422. Las páginas citadas corresponden a la numeración impresa en la norma.</p>
+  </footer>
+
+  <script src="src/criterios.js"></script>
+  <script src="src/evaluador.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>
